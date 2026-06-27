@@ -77,6 +77,15 @@
             font-weight: bold;
         }
 
+        .big-readout {
+            font-size: 1.08em;
+            line-height: 1.6;
+            background: #f4f7fb;
+            border-left: 5px solid #4b6cb7;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -107,11 +116,19 @@
 </div>
 
 <div class="card">
-    <h2>Current Interpretation</h2>
+    <h2>Current Readout</h2>
+    <p class="big-readout">
+        Moderate microseismic activation may be present, but the calibrated M4.0+ probability remains below historical baseline in the 7-day and 30-day horizons. The model does not currently indicate elevated short-term M4.0+ probability. The 7-day activation score is moderate, meaning the recent microseismic pattern deserves monitoring but is not classified as high activation.
+    </p>
+</div>
+
+<div class="card">
+    <h2>How to Read This Dashboard</h2>
     <p>
-    The table below compares the model-estimated probability against the historical baseline
-    for each forecast horizon. The activation score is separate and asks whether the last
-    7 days of seismicity resemble pre-M4.0+ activation windows.
+    The table below compares the raw model probability and the conservative adjusted
+    probability against the historical baseline for each forecast horizon.
+    The activation score is separate and asks whether the last 7 days of seismicity
+    resemble pre-M4.0+ activation windows.
     </p>
 </div>
 
@@ -120,15 +137,17 @@
     <table border="1" class="dataframe data-table">
   <thead>
     <tr style="text-align: right;">
-      <th>date</th>
-      <th>target</th>
-      <th>forecast_horizon_days</th>
-      <th>monotonic_probability</th>
-      <th>baseline_rate_for_horizon</th>
-      <th>monotonic_risk_ratio_vs_baseline</th>
-      <th>operational_risk_category</th>
-      <th>activation_score_7d</th>
-      <th>activation_category_7d</th>
+      <th>Forecast date</th>
+      <th>Target</th>
+      <th>Forecast horizon</th>
+      <th>Raw model probability</th>
+      <th>Conservative adjusted probability</th>
+      <th>Historical baseline</th>
+      <th>Raw risk ratio</th>
+      <th>Adjusted risk ratio</th>
+      <th>Risk category</th>
+      <th>7-day activation score</th>
+      <th>7-day activation category</th>
     </tr>
   </thead>
   <tbody>
@@ -137,7 +156,9 @@
       <td>M4.0+</td>
       <td>7</td>
       <td>0.42%</td>
+      <td>0.42%</td>
       <td>4.17%</td>
+      <td>0.1x</td>
       <td>0.1x</td>
       <td><span class="below">Below baseline</span></td>
       <td>0.472</td>
@@ -147,8 +168,10 @@
       <td>2026-06-28 00:00:00+00:00</td>
       <td>M4.0+</td>
       <td>30</td>
+      <td>0.37%</td>
       <td>0.42%</td>
       <td>15.6%</td>
+      <td>0.02x</td>
       <td>0.03x</td>
       <td><span class="below">Below baseline</span></td>
       <td>0.472</td>
@@ -158,8 +181,10 @@
       <td>2026-06-28 00:00:00+00:00</td>
       <td>M4.0+</td>
       <td>60</td>
+      <td>0.32%</td>
       <td>0.42%</td>
       <td>27.64%</td>
+      <td>0.01x</td>
       <td>0.02x</td>
       <td><span class="below">Below baseline</span></td>
       <td>0.472</td>
@@ -169,8 +194,10 @@
       <td>2026-06-28 00:00:00+00:00</td>
       <td>M4.0+</td>
       <td>90</td>
+      <td>0.19%</td>
       <td>0.42%</td>
       <td>38.33%</td>
+      <td>0.0x</td>
       <td>0.01x</td>
       <td><span class="below">Below baseline</span></td>
       <td>0.472</td>
