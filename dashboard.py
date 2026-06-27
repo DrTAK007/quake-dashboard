@@ -985,15 +985,16 @@ def main():
     # --------------------------------------------------------
     # Final dashboard table
     # --------------------------------------------------------
-
     final_dashboard = latest_forecast[[
-        "date",
-        "target",
-        "forecast_horizon_days",
-        "monotonic_probability",
-        "baseline_rate_for_horizon",
-        "monotonic_risk_ratio_vs_baseline",
-        "operational_risk_category",
+    "date",
+    "target",
+    "forecast_horizon_days",
+    "predicted_probability",
+    "monotonic_probability",
+    "baseline_rate_for_horizon",
+    "risk_ratio_vs_baseline",
+    "monotonic_risk_ratio_vs_baseline",
+    "operational_risk_category",
     ]].copy()
 
     final_dashboard["activation_score_7d"] = activation_score
@@ -1003,30 +1004,51 @@ def main():
     display_dashboard = final_dashboard.copy()
     display_dashboard["date"] = display_dashboard["date"].astype(str)
 
-    display_dashboard["monotonic_probability"] = (
-        display_dashboard["monotonic_probability"] * 100
-    ).round(2).astype(str) + "%"
+    # Format probability columns
+    for col in [
+        "predicted_probability",
+        "monotonic_probability",
+        "baseline_rate_for_horizon",
+    ]:
+        display_dashboard[col] = (
+            display_dashboard[col] * 100
+        ).round(2).astype(str) + "%"
 
-    display_dashboard["baseline_rate_for_horizon"] = (
-        display_dashboard["baseline_rate_for_horizon"] * 100
-    ).round(2).astype(str) + "%"
-
-    display_dashboard["monotonic_risk_ratio_vs_baseline"] = (
-        display_dashboard["monotonic_risk_ratio_vs_baseline"].round(2).astype(str)
-        + "x"
-    )
+    # Format risk-ratio columns
+    for col in [
+        "risk_ratio_vs_baseline",
+        "monotonic_risk_ratio_vs_baseline",
+    ]:
+        display_dashboard[col] = (
+            display_dashboard[col].round(2).astype(str) + "x"
+        )
 
     display_dashboard["activation_score_7d"] = display_dashboard[
         "activation_score_7d"
     ].round(3)
 
+    # Rename columns for readability
+    display_dashboard = display_dashboard.rename(columns={
+        "date": "Forecast date",
+        "target": "Target",
+        "forecast_horizon_days": "Forecast horizon",
+        "predicted_probability": "Raw model probability",
+        "monotonic_probability": "Conservative adjusted probability",
+        "baseline_rate_for_horizon": "Historical baseline",
+        "risk_ratio_vs_baseline": "Raw risk ratio",
+        "monotonic_risk_ratio_vs_baseline": "Adjusted risk ratio",
+        "operational_risk_category": "Risk category",
+        "activation_score_7d": "7-day activation score",
+        "activation_category_7d": "7-day activation category",
+    })
+
     # Add CSS classes for categories
-    display_dashboard["operational_risk_category"] = display_dashboard[
-        "operational_risk_category"
+    display_dashboard["Risk category"] = display_dashboard[
+        "Risk category"
     ].apply(lambda x: f'<span class="{category_class(x)}">{x}</span>')
 
-    display_dashboard["activation_category_7d"] = display_dashboard[
-        "activation_category_7d"
+    display_dashboard["7-day activation category"] = display_dashboard[
+        "7-day activation category"
     ].apply(lambda x: f'<span class="{category_class(x)}">{x}</span>')
 
     activation_display = activation_result.copy()
@@ -1051,6 +1073,59 @@ def main():
     )
 
     latest_features = activation_result.iloc[0]
+    # --------------------------------------------------------
+    # Plain-English current readout
+    # --------------------------------------------------------
+
+    short_term_category = latest_forecast.loc[
+        latest_forecast["forecast_horizon_days"] == 7,
+        "operational_risk_category"
+    ].iloc[0]
+
+    thirty_day_category = latest_forecast.loc[
+        latest_forecast["forecast_horizon_days"] == 30,
+        "operational_risk_category"
+    ].iloc[0]
+
+    if "Below baseline" in short_term_category and "Below baseline" in thirty_day_category:
+        current_readout = (
+            "Moderate microseismic activation may be present, but the calibrated "
+            "M4.0+ probability remains below historical baseline in the 7-day and "
+            "30-day horizons. The model does not currently indicate elevated "
+            "short-term M4.0+ probability."
+        )
+    elif "Baseline" in short_term_category and "Baseline" in thirty_day_category:
+        current_readout = (
+            "The model currently estimates M4.0+ probability near historical baseline. "
+            "Recent seismicity does not indicate a clearly elevated short-term state."
+        )
+    elif "elevated" in short_term_category.lower() or "elevated" in thirty_day_category.lower():
+        current_readout = (
+            "The model currently estimates elevated M4.0+ probability relative to "
+            "historical baseline. This should be interpreted as an experimental "
+            "probabilistic signal, not a deterministic earthquake prediction."
+        )
+    else:
+        current_readout = (
+            "The model output is mixed. Review both the calibrated probability and "
+            "the 7-day activation score before interpreting the current state."
+        )
+
+    # Add activation nuance
+    if activation_cat == "Moderate activation":
+        current_readout += (
+            " The 7-day activation score is moderate, meaning the recent microseismic "
+            "pattern deserves monitoring but is not classified as high activation."
+        )
+    elif activation_cat in ["High activation", "Very high activation"]:
+        current_readout += (
+            " The 7-day activation score is high, meaning recent microseismicity "
+            "resembles pre-M4.0+ activation windows more strongly."
+        )
+    elif activation_cat == "Low activation":
+        current_readout += (
+            " The 7-day activation score is low."
+        )
 
     # --------------------------------------------------------
     # Write HTML
@@ -1135,6 +1210,15 @@ def main():
             font-weight: bold;
         }}
 
+        .big-readout {
+            font-size: 1.08em;
+            line-height: 1.6;
+            background: #f4f7fb;
+            border-left: 5px solid #4b6cb7;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
         .grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1165,11 +1249,19 @@ def main():
 </div>
 
 <div class="card">
-    <h2>Current Interpretation</h2>
+    <h2>Current Readout</h2>
+    <p class="big-readout">
+        {current_readout}
+    </p>
+</div>
+
+<div class="card">
+    <h2>How to Read This Dashboard</h2>
     <p>
-    The table below compares the model-estimated probability against the historical baseline
-    for each forecast horizon. The activation score is separate and asks whether the last
-    7 days of seismicity resemble pre-M4.0+ activation windows.
+    The table below compares the raw model probability and the conservative adjusted
+    probability against the historical baseline for each forecast horizon.
+    The activation score is separate and asks whether the last 7 days of seismicity
+    resemble pre-M4.0+ activation windows.
     </p>
 </div>
 
