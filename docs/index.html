@@ -1,7 +1,367 @@
+
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Inland Empire / Cajon Pass Earthquake Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f7f7f7;
+            color: #222;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        .below {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .baseline {
+            color: #555;
+            font-weight: bold;
+        }
+
+        .elevated {
+            color: #c77800;
+            font-weight: bold;
+        }
+
+        .strong {
+            color: #b00020;
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 0.92em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .big-number {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .mini {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #e5e5e5;
+        }
+    </style>
+</head>
+
 <body>
-<h1>Earthquake dashboard is being set up.</h1>
-<p>Waiting for the first automated model run.</p>
+
+<div class="card">
+    <h1>Inland Empire / Cajon Pass Earthquake Monitor</h1>
+    <div class="subtitle">Daily automated experimental model output for local M4.0+ activity</div>
+
+    <p><strong>Latest forecast date:</strong> 2026-06-28 00:00:00+00:00</p>
+    <p><strong>Target:</strong> M4.0+ earthquake within the Inland Empire / Cajon Pass study box</p>
+    <p><strong>7-day activation score:</strong>
+       <span class="big-number">0.472</span>
+       — <strong>Moderate activation</strong>
+    </p>
+</div>
+
+<div class="card">
+    <h2>Current Interpretation</h2>
+    <p>
+    The table below compares the model-estimated probability against the historical baseline
+    for each forecast horizon. The activation score is separate and asks whether the last
+    7 days of seismicity resemble pre-M4.0+ activation windows.
+    </p>
+</div>
+
+<div class="card">
+    <h2>Multi-Horizon Forecast</h2>
+    <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>date</th>
+      <th>target</th>
+      <th>forecast_horizon_days</th>
+      <th>monotonic_probability</th>
+      <th>baseline_rate_for_horizon</th>
+      <th>monotonic_risk_ratio_vs_baseline</th>
+      <th>operational_risk_category</th>
+      <th>activation_score_7d</th>
+      <th>activation_category_7d</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2026-06-28 00:00:00+00:00</td>
+      <td>M4.0+</td>
+      <td>7</td>
+      <td>0.42%</td>
+      <td>4.17%</td>
+      <td>0.1x</td>
+      <td><span class="below">Below baseline</span></td>
+      <td>0.472</td>
+      <td><span class="">Moderate activation</span></td>
+    </tr>
+    <tr>
+      <td>2026-06-28 00:00:00+00:00</td>
+      <td>M4.0+</td>
+      <td>30</td>
+      <td>0.42%</td>
+      <td>15.6%</td>
+      <td>0.03x</td>
+      <td><span class="below">Below baseline</span></td>
+      <td>0.472</td>
+      <td><span class="">Moderate activation</span></td>
+    </tr>
+    <tr>
+      <td>2026-06-28 00:00:00+00:00</td>
+      <td>M4.0+</td>
+      <td>60</td>
+      <td>0.42%</td>
+      <td>27.64%</td>
+      <td>0.02x</td>
+      <td><span class="below">Below baseline</span></td>
+      <td>0.472</td>
+      <td><span class="">Moderate activation</span></td>
+    </tr>
+    <tr>
+      <td>2026-06-28 00:00:00+00:00</td>
+      <td>M4.0+</td>
+      <td>90</td>
+      <td>0.42%</td>
+      <td>38.33%</td>
+      <td>0.01x</td>
+      <td><span class="below">Below baseline</span></td>
+      <td>0.472</td>
+      <td><span class="">Moderate activation</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+    <h2>Latest 7-Day Seismic Features</h2>
+
+    <div class="grid">
+        <div class="mini"><strong>&lt;M3 events:</strong><br>131</div>
+        <div class="mini"><strong>M1–M2 events:</strong><br>38</div>
+        <div class="mini"><strong>M2–M3 events:</strong><br>3</div>
+        <div class="mini"><strong>M3+ events:</strong><br>0</div>
+        <div class="mini"><strong>M4+ events:</strong><br>0</div>
+        <div class="mini"><strong>Max magnitude:</strong><br>2.83</div>
+        <div class="mini"><strong>Closest to Cajon Pass:</strong><br>9.52 km</div>
+        <div class="mini"><strong>Local b-value:</strong><br>0.851</div>
+    </div>
+
+    <br>
+    <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>date</th>
+      <th>target</th>
+      <th>activation_window</th>
+      <th>activation_score</th>
+      <th>activation_category</th>
+      <th>n_under3_last7d</th>
+      <th>n_m1_m2_last7d</th>
+      <th>n_m2_m3_last7d</th>
+      <th>n_m3plus_last7d</th>
+      <th>n_m4plus_last7d</th>
+      <th>max_mag_last7d</th>
+      <th>min_dist_to_cajon_last7d</th>
+      <th>local_mc_last7d</th>
+      <th>local_b_value_last7d</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2026-06-28 00:00:00+00:00</td>
+      <td>M4.0+</td>
+      <td>previous 7 days</td>
+      <td>0.472</td>
+      <td>Moderate activation</td>
+      <td>131</td>
+      <td>38</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.83</td>
+      <td>9.52</td>
+      <td>0.5</td>
+      <td>0.851</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+    <h2>Model Performance Summary</h2>
+    <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>target_mag</th>
+      <th>feature_window_days</th>
+      <th>forecast_horizon_days</th>
+      <th>n_rows</th>
+      <th>n_train</th>
+      <th>n_cal</th>
+      <th>n_test</th>
+      <th>positive_days_total</th>
+      <th>positive_rate_total</th>
+      <th>train_positive_rate</th>
+      <th>cal_positive_rate</th>
+      <th>test_positive_rate</th>
+      <th>raw_auc_test</th>
+      <th>raw_ap_test</th>
+      <th>raw_brier_test</th>
+      <th>cal_auc_test</th>
+      <th>cal_ap_test</th>
+      <th>cal_brier_test</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4.0</td>
+      <td>7</td>
+      <td>7</td>
+      <td>6739</td>
+      <td>4582</td>
+      <td>1146</td>
+      <td>1011</td>
+      <td>281</td>
+      <td>0.0417</td>
+      <td>0.0404</td>
+      <td>0.0401</td>
+      <td>0.0495</td>
+      <td>0.4510</td>
+      <td>0.0422</td>
+      <td>0.0520</td>
+      <td>0.4510</td>
+      <td>0.0422</td>
+      <td>0.0564</td>
+    </tr>
+    <tr>
+      <td>4.0</td>
+      <td>7</td>
+      <td>30</td>
+      <td>6716</td>
+      <td>4566</td>
+      <td>1142</td>
+      <td>1008</td>
+      <td>1048</td>
+      <td>0.1560</td>
+      <td>0.1485</td>
+      <td>0.1480</td>
+      <td>0.1994</td>
+      <td>0.5472</td>
+      <td>0.2234</td>
+      <td>0.1665</td>
+      <td>0.5472</td>
+      <td>0.2234</td>
+      <td>0.1976</td>
+    </tr>
+    <tr>
+      <td>4.0</td>
+      <td>7</td>
+      <td>60</td>
+      <td>6686</td>
+      <td>4546</td>
+      <td>1137</td>
+      <td>1003</td>
+      <td>1848</td>
+      <td>0.2764</td>
+      <td>0.2580</td>
+      <td>0.2586</td>
+      <td>0.3799</td>
+      <td>0.5300</td>
+      <td>0.4424</td>
+      <td>0.2525</td>
+      <td>0.5300</td>
+      <td>0.4424</td>
+      <td>0.3354</td>
+    </tr>
+    <tr>
+      <td>4.0</td>
+      <td>7</td>
+      <td>90</td>
+      <td>6656</td>
+      <td>4525</td>
+      <td>1132</td>
+      <td>999</td>
+      <td>2551</td>
+      <td>0.3833</td>
+      <td>0.3565</td>
+      <td>0.3560</td>
+      <td>0.5355</td>
+      <td>0.4120</td>
+      <td>0.5385</td>
+      <td>0.3114</td>
+      <td>0.4120</td>
+      <td>0.5385</td>
+      <td>0.4623</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card note">
+    <h2>Important Interpretation Note</h2>
+    <p>
+    This dashboard is an experimental probabilistic model for local M4.0+ activity.
+    It is not a deterministic earthquake prediction system and should not be used
+    for emergency decisions. It is intended to monitor whether recent seismicity is
+    below baseline, baseline, or elevated relative to historical activity in the selected region.
+    </p>
+    <p>
+    The calibrated probability model and the 7-day activation score are separate.
+    A moderate activation score with below-baseline probability means there is microseismic
+    activity, but the full pattern has not crossed the model's threshold for elevated M4.0+ probability.
+    </p>
+    <p>
+    Last generated automatically by GitHub Actions.
+    </p>
+</div>
+
 </body>
 </html>
