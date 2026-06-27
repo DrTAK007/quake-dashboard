@@ -1210,14 +1210,14 @@ def main():
             font-weight: bold;
         }}
 
-        .big-readout {
+        .big-readout {{
             font-size: 1.08em;
             line-height: 1.6;
             background: #f4f7fb;
             border-left: 5px solid #4b6cb7;
             padding: 16px;
             border-radius: 8px;
-        }
+        }}
 
         .grid {{
             display: grid;
