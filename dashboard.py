@@ -1283,14 +1283,6 @@ def main():
         <div class="mini"><strong>Closest to Cajon Pass:</strong><br>{round(float(latest_features["min_dist_to_cajon_last7d"]), 2)} km</div>
         <div class="mini"><strong>Local b-value:</strong><br>{round(float(latest_features["local_b_value_last7d"]), 3) if pd.notna(latest_features["local_b_value_last7d"]) else "NA"}</div>
     </div>
-
-    <br>
-    {dataframe_to_html_table(activation_display)}
-</div>
-
-<div class="card">
-    <h2>Model Performance Summary</h2>
-    {dataframe_to_html_table(summary_display)}
 </div>
 
 <div class="card note">
